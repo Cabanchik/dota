@@ -23,7 +23,7 @@ namespace dota
         public Game(games games)
         {
             //MainWindow mp = new MainWindow();
-            this.DataContext = games;
+            this.DataContext = games;//a
             InitializeComponent();
 
 
