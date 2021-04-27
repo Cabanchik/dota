@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище dota2Model" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="countries">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="games">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="dire_team_id" Type="int" />
+          <Property Name="radiant_team_id" Type="int" />
+          <Property Name="dire_kills" Type="int" />
+          <Property Name="radiant_kills" Type="int" />
+          <Property Name="game_start" Type="datetime" Precision="0" />
+          <Property Name="game_end" Type="datetime" Precision="0" />
+          <Property Name="tournament_id" Type="int" />
+          <Property Name="is_played" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="players">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="45" />
+          <Property Name="surname" Type="varchar" MaxLength="45" />
+          <Property Name="nickname" Type="varchar" MaxLength="45" />
+          <Property Name="country_id" Type="int" />
+          <Property Name="team_id" Type="int" />
+          <Property Name="position_id" Type="int" />
+          <Property Name="profile_photo" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="players_positions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="regions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="region" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="teams">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="45" />
+          <Property Name="region_id" Type="int" />
+          <Property Name="dpc_points" Type="int" />
+          <Property Name="dpc_season_wins" Type="int" />
+          <Property Name="team_logo" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="tournaments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="45" />
+          <Property Name="isOnline" Type="tinyint" />
+          <Property Name="prize_pool" Type="double" />
+          <Property Name="city" Type="varchar" MaxLength="45" />
+          <Property Name="start_date" Type="datetime" Precision="0" />
+          <Property Name="expiration_date" Type="datetime" Precision="0" />
+          <Property Name="dpc_points_invite" Type="int" />
+          <Property Name="dpc_points_pool" Type="int" />
+          <Property Name="tournament_pic" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="games_ibfk_1">
+          <End Role="teams" Type="Self.teams" Multiplicity="0..1" />
+          <End Role="games" Type="Self.games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="teams">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="games">
+              <PropertyRef Name="dire_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="games_ibfk_2">
+          <End Role="teams" Type="Self.teams" Multiplicity="0..1" />
+          <End Role="games" Type="Self.games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="teams">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="games">
+              <PropertyRef Name="radiant_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="games_ibfk_4">
+          <End Role="tournaments" Type="Self.tournaments" Multiplicity="0..1" />
+          <End Role="games" Type="Self.games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tournaments">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="games">
+              <PropertyRef Name="tournament_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="players_ibfk_2">
+          <End Role="teams" Type="Self.teams" Multiplicity="0..1" />
+          <End Role="players" Type="Self.players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="teams">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="players">
+              <PropertyRef Name="team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="players_ibfk_3">
+          <End Role="players_positions" Type="Self.players_positions" Multiplicity="0..1" />
+          <End Role="players" Type="Self.players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="players_positions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="players">
+              <PropertyRef Name="position_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="players_ibfk_4">
+          <End Role="countries" Type="Self.countries" Multiplicity="0..1" />
+          <End Role="players" Type="Self.players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="countries">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="players">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="teams_ibfk_1">
+          <End Role="regions" Type="Self.regions" Multiplicity="0..1" />
+          <End Role="teams" Type="Self.teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="regions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="teams">
+              <PropertyRef Name="region_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище dota2ModelContainer">
+          <EntitySet Name="countries" EntityType="Self.countries" Schema="" store:Type="Tables" />
+          <EntitySet Name="games" EntityType="Self.games" Schema="" store:Type="Tables" />
+          <EntitySet Name="players" EntityType="Self.players" Schema="" store:Type="Tables" />
+          <EntitySet Name="players_positions" EntityType="Self.players_positions" Schema="" store:Type="Tables" />
+          <EntitySet Name="regions" EntityType="Self.regions" Schema="" store:Type="Tables" />
+          <EntitySet Name="teams" EntityType="Self.teams" Schema="" store:Type="Tables" />
+          <EntitySet Name="tournaments" EntityType="Self.tournaments" Schema="" store:Type="Tables" />
+          <AssociationSet Name="games_ibfk_1" Association="Self.games_ibfk_1">
+            <End Role="teams" EntitySet="teams" />
+            <End Role="games" EntitySet="games" />
+          </AssociationSet>
+          <AssociationSet Name="games_ibfk_2" Association="Self.games_ibfk_2">
+            <End Role="teams" EntitySet="teams" />
+            <End Role="games" EntitySet="games" />
+          </AssociationSet>
+          <AssociationSet Name="games_ibfk_4" Association="Self.games_ibfk_4">
+            <End Role="tournaments" EntitySet="tournaments" />
+            <End Role="games" EntitySet="games" />
+          </AssociationSet>
+          <AssociationSet Name="players_ibfk_2" Association="Self.players_ibfk_2">
+            <End Role="teams" EntitySet="teams" />
+            <End Role="players" EntitySet="players" />
+          </AssociationSet>
+          <AssociationSet Name="players_ibfk_3" Association="Self.players_ibfk_3">
+            <End Role="players_positions" EntitySet="players_positions" />
+            <End Role="players" EntitySet="players" />
+          </AssociationSet>
+          <AssociationSet Name="players_ibfk_4" Association="Self.players_ibfk_4">
+            <End Role="countries" EntitySet="countries" />
+            <End Role="players" EntitySet="players" />
+          </AssociationSet>
+          <AssociationSet Name="teams_ibfk_1" Association="Self.teams_ibfk_1">
+            <End Role="regions" EntitySet="regions" />
+            <End Role="teams" EntitySet="teams" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dota2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="countries">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="players" Relationship="Self.players_ibfk_4" FromRole="countries" ToRole="players" />
+        </EntityType>
+        <EntityType Name="games">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="dire_team_id" Type="Int32" />
+          <Property Name="radiant_team_id" Type="Int32" />
+          <Property Name="dire_kills" Type="Int32" />
+          <Property Name="radiant_kills" Type="Int32" />
+          <Property Name="game_start" Type="DateTime" />
+          <Property Name="game_end" Type="DateTime" />
+          <Property Name="tournament_id" Type="Int32" />
+          <Property Name="is_played" Type="SByte" />
+          <NavigationProperty Name="teams" Relationship="Self.games_ibfk_1" FromRole="games" ToRole="teams" />
+          <NavigationProperty Name="teams1" Relationship="Self.games_ibfk_2" FromRole="games" ToRole="teams" />
+          <NavigationProperty Name="tournaments" Relationship="Self.games_ibfk_4" FromRole="games" ToRole="tournaments" />
+        </EntityType>
+        <EntityType Name="players">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="surname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="nickname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="country_id" Type="Int32" />
+          <Property Name="team_id" Type="Int32" />
+          <Property Name="position_id" Type="Int32" />
+          <Property Name="profile_photo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="countries" Relationship="Self.players_ibfk_4" FromRole="players" ToRole="countries" />
+          <NavigationProperty Name="teams" Relationship="Self.players_ibfk_2" FromRole="players" ToRole="teams" />
+          <NavigationProperty Name="players_positions" Relationship="Self.players_ibfk_3" FromRole="players" ToRole="players_positions" />
+        </EntityType>
+        <EntityType Name="players_positions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="players" Relationship="Self.players_ibfk_3" FromRole="players_positions" ToRole="players" />
+        </EntityType>
+        <EntityType Name="regions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="region" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="teams" Relationship="Self.teams_ibfk_1" FromRole="regions" ToRole="teams" />
+        </EntityType>
+        <EntityType Name="teams">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="region_id" Type="Int32" />
+          <Property Name="dpc_points" Type="Int32" />
+          <Property Name="dpc_season_wins" Type="Int32" />
+          <Property Name="team_logo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="games" Relationship="Self.games_ibfk_1" FromRole="teams" ToRole="games" />
+          <NavigationProperty Name="games1" Relationship="Self.games_ibfk_2" FromRole="teams" ToRole="games" />
+          <NavigationProperty Name="players" Relationship="Self.players_ibfk_2" FromRole="teams" ToRole="players" />
+          <NavigationProperty Name="regions" Relationship="Self.teams_ibfk_1" FromRole="teams" ToRole="regions" />
+        </EntityType>
+        <EntityType Name="tournaments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="isOnline" Type="SByte" />
+          <Property Name="prize_pool" Type="Double" />
+          <Property Name="city" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="start_date" Type="DateTime" />
+          <Property Name="expiration_date" Type="DateTime" />
+          <Property Name="dpc_points_invite" Type="Int32" />
+          <Property Name="dpc_points_pool" Type="Int32" />
+          <Property Name="tournament_pic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="games" Relationship="Self.games_ibfk_4" FromRole="tournaments" ToRole="games" />
+        </EntityType>
+        <Association Name="players_ibfk_4">
+          <End Role="countries" Type="Self.countries" Multiplicity="0..1" />
+          <End Role="players" Type="Self.players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="countries">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="players">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="games_ibfk_1">
+          <End Role="teams" Type="Self.teams" Multiplicity="0..1" />
+          <End Role="games" Type="Self.games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="teams">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="games">
+              <PropertyRef Name="dire_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="games_ibfk_2">
+          <End Role="teams" Type="Self.teams" Multiplicity="0..1" />
+          <End Role="games" Type="Self.games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="teams">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="games">
+              <PropertyRef Name="radiant_team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="games_ibfk_4">
+          <End Role="tournaments" Type="Self.tournaments" Multiplicity="0..1" />
+          <End Role="games" Type="Self.games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tournaments">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="games">
+              <PropertyRef Name="tournament_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="players_ibfk_2">
+          <End Role="teams" Type="Self.teams" Multiplicity="0..1" />
+          <End Role="players" Type="Self.players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="teams">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="players">
+              <PropertyRef Name="team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="players_ibfk_3">
+          <End Role="players_positions" Type="Self.players_positions" Multiplicity="0..1" />
+          <End Role="players" Type="Self.players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="players_positions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="players">
+              <PropertyRef Name="position_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="teams_ibfk_1">
+          <End Role="regions" Type="Self.regions" Multiplicity="0..1" />
+          <End Role="teams" Type="Self.teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="regions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="teams">
+              <PropertyRef Name="region_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dota2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="countries" EntityType="Self.countries" />
+          <EntitySet Name="games" EntityType="Self.games" />
+          <EntitySet Name="players" EntityType="Self.players" />
+          <EntitySet Name="players_positions" EntityType="Self.players_positions" />
+          <EntitySet Name="regions" EntityType="Self.regions" />
+          <EntitySet Name="teams" EntityType="Self.teams" />
+          <EntitySet Name="tournaments" EntityType="Self.tournaments" />
+          <AssociationSet Name="players_ibfk_4" Association="Self.players_ibfk_4">
+            <End Role="countries" EntitySet="countries" />
+            <End Role="players" EntitySet="players" />
+          </AssociationSet>
+          <AssociationSet Name="games_ibfk_1" Association="Self.games_ibfk_1">
+            <End Role="teams" EntitySet="teams" />
+            <End Role="games" EntitySet="games" />
+          </AssociationSet>
+          <AssociationSet Name="games_ibfk_2" Association="Self.games_ibfk_2">
+            <End Role="teams" EntitySet="teams" />
+            <End Role="games" EntitySet="games" />
+          </AssociationSet>
+          <AssociationSet Name="games_ibfk_4" Association="Self.games_ibfk_4">
+            <End Role="tournaments" EntitySet="tournaments" />
+            <End Role="games" EntitySet="games" />
+          </AssociationSet>
+          <AssociationSet Name="players_ibfk_2" Association="Self.players_ibfk_2">
+            <End Role="teams" EntitySet="teams" />
+            <End Role="players" EntitySet="players" />
+          </AssociationSet>
+          <AssociationSet Name="players_ibfk_3" Association="Self.players_ibfk_3">
+            <End Role="players_positions" EntitySet="players_positions" />
+            <End Role="players" EntitySet="players" />
+          </AssociationSet>
+          <AssociationSet Name="teams_ibfk_1" Association="Self.teams_ibfk_1">
+            <End Role="regions" EntitySet="regions" />
+            <End Role="teams" EntitySet="teams" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище dota2ModelContainer" CdmEntityContainer="dota2Entities">
+          <EntitySetMapping Name="countries">
+            <EntityTypeMapping TypeName="dota2Model.countries">
+              <MappingFragment StoreEntitySet="countries">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="games">
+            <EntityTypeMapping TypeName="dota2Model.games">
+              <MappingFragment StoreEntitySet="games">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dire_team_id" ColumnName="dire_team_id" />
+                <ScalarProperty Name="radiant_team_id" ColumnName="radiant_team_id" />
+                <ScalarProperty Name="dire_kills" ColumnName="dire_kills" />
+                <ScalarProperty Name="radiant_kills" ColumnName="radiant_kills" />
+                <ScalarProperty Name="game_start" ColumnName="game_start" />
+                <ScalarProperty Name="game_end" ColumnName="game_end" />
+                <ScalarProperty Name="tournament_id" ColumnName="tournament_id" />
+                <ScalarProperty Name="is_played" ColumnName="is_played" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="players">
+            <EntityTypeMapping TypeName="dota2Model.players">
+              <MappingFragment StoreEntitySet="players">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="nickname" ColumnName="nickname" />
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="team_id" ColumnName="team_id" />
+                <ScalarProperty Name="position_id" ColumnName="position_id" />
+                <ScalarProperty Name="profile_photo" ColumnName="profile_photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="players_positions">
+            <EntityTypeMapping TypeName="dota2Model.players_positions">
+              <MappingFragment StoreEntitySet="players_positions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="regions">
+            <EntityTypeMapping TypeName="dota2Model.regions">
+              <MappingFragment StoreEntitySet="regions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="region" ColumnName="region" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="teams">
+            <EntityTypeMapping TypeName="dota2Model.teams">
+              <MappingFragment StoreEntitySet="teams">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="region_id" ColumnName="region_id" />
+                <ScalarProperty Name="dpc_points" ColumnName="dpc_points" />
+                <ScalarProperty Name="dpc_season_wins" ColumnName="dpc_season_wins" />
+                <ScalarProperty Name="team_logo" ColumnName="team_logo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tournaments">
+            <EntityTypeMapping TypeName="dota2Model.tournaments">
+              <MappingFragment StoreEntitySet="tournaments">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="isOnline" ColumnName="isOnline" />
+                <ScalarProperty Name="prize_pool" ColumnName="prize_pool" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="expiration_date" ColumnName="expiration_date" />
+                <ScalarProperty Name="dpc_points_invite" ColumnName="dpc_points_invite" />
+                <ScalarProperty Name="dpc_points_pool" ColumnName="dpc_points_pool" />
+                <ScalarProperty Name="tournament_pic" ColumnName="tournament_pic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
